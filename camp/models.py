@@ -13,6 +13,7 @@ class CCamp(models.Model):
     total_people = models.IntegerField(verbose_name='总人数')
     remainder = models.IntegerField(verbose_name='剩余人数')
     symbol = models.IntegerField(verbose_name='第几期', blank=False)
+    price = models.IntegerField(verbose_name='价格', blank=False, default=5980)
 
     class Meta:
 
@@ -27,13 +28,14 @@ class JCamp(models.Model):
     total_people = models.IntegerField(verbose_name='总人数')
     remainder = models.IntegerField(verbose_name='剩余人数')
     symbol = models.IntegerField(verbose_name='第几期',blank=False)
+    price = models.IntegerField(verbose_name='价格', blank=False, default=4980)
 
     class Meta:
 
         db_table = "j_camp"
 
 
-class BaseSignUpListModel():
+class BaseSignUpListModel:
 
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     symbol = models.IntegerField(verbose_name='第几期')
@@ -102,7 +104,7 @@ class BaseSignUpListModel():
 
 class TenatCampPrice(models.Model):
 
-    tenat_id = models.ForeignKey(Tenat,on_delete=models.CASCADE)
+    tenat_id = models.ForeignKey(Tenat, on_delete=models.CASCADE)
     c_camp = models.CharField(verbose_name='畅享营价格',max_length=10,null=True,blank=True)
     j_camp = models.CharField(verbose_name='畅享营价格',max_length=10,null=True,blank=True)
 
