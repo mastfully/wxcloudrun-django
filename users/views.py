@@ -39,7 +39,7 @@ class LoginView(APIView):
     permission_classes = []
 
     def post(self, request):
-
+        print(request.data)
         tenat_id = request.data.get('tenat_id')
         code = request.data.get('code')
         logger.info("Code: {0}".format(code))
@@ -56,8 +56,8 @@ class LoginView(APIView):
                     token = JfwTokenObtainPairSerializer.get_token(user).access_token
                     return Response(
                         {
-                            'jwt': str(token),
+                            'token': str(token),
                             'openid': openid,
                         },
                         status=HTTP_200_OK)
-        return Response({'jwt': None, 'user': {}}, status=HTTP_204_NO_CONTENT)
+        return Response({'token': None, 'user': {}}, status=HTTP_204_NO_CONTENT)
