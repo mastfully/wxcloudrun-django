@@ -39,10 +39,10 @@ class LoginView(APIView):
     permission_classes = []
 
     def post(self, request):
-        print(request.data)
         tenat_id = request.data.get('tenat_id')
         code = request.data.get('code')
         logger.info("Code: {0}".format(code))
+        logger.info("appid:{0}".format(settings.APPID))
         if code:
             session_info = WXAPPAPI(settings.APPID, settings.APPSECRET)
             try:
