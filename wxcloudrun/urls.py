@@ -18,13 +18,8 @@ from wxcloudrun import views
 from django.conf.urls import url
 from django.urls import path, include
 
-urlpatterns = (
-    # 计数器接口
-    url(r'^^api/count(/)?$', views.counter),
-
-    # 获取主页
-    url(r'(/)?$', views.index),
+urlpatterns = [
     path('users/',include('users.urls')),
     path('tenat/',include('tenat.urls')),
     path('camp/',include('camp.urls'))
-)
+]

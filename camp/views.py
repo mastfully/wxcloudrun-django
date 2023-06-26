@@ -16,8 +16,8 @@ class CampsView(APIView):
         data = {}
         jcamps = JCamp.objects.all()
         ccamps = CCamp.objects.all()
-        jcamps = JCampSerializer(jcamps, many=True)
-        ccamps = CCampSerializer(ccamps, many=True)
+        jcamps = JCampSerializer(jcamps, many=True).data
+        ccamps = CCampSerializer(ccamps, many=True).data
         data['jcamps'] = jcamps
         data['ccamps'] = ccamps
 
