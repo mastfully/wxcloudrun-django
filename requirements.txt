@@ -1,7 +1,9 @@
 asgiref==3.4.1
 certifi==2023.5.7
+cffi==1.15.1
 chardet==5.1.0
 charset-normalizer==3.1.0
+cryptography==41.0.1
 Django==3.2.8
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
@@ -12,6 +14,7 @@ pycparser==2.21
 pycryptodome==3.18.0
 PyJWT==2.7.0
 PyMySQL==1.0.2
+pyOpenSSL==23.2.0
 python-weixin==0.5.0
 pytz==2021.3
 requests==2.31.0

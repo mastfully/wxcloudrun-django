@@ -6,9 +6,7 @@ import logging
 from weixin import WXAPPAPI
 from weixin.oauth2 import OAuth2AuthExchangeError
 from wxcloudrun import settings
-import ssl
 
-ssl._create_default_https_context = ssl._create_unverified_context
 
 # Create your views here.
 from .models import *
