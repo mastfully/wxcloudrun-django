@@ -3,9 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK,HTTP_204_NO_CONTENT
 import logging
-from weixin.client import WXAPPAPI
+from weixin import WXAPPAPI
 from weixin.oauth2 import OAuth2AuthExchangeError
 from wxcloudrun import settings
+
 
 # Create your views here.
 from .models import *
@@ -41,10 +42,8 @@ class LoginView(APIView):
     def post(self, request):
         tenat_id = request.data.get('tenat_id')
         code = request.data.get('code')
-        logger.info("Code: {0}".format(code))
-        logger.info("appid:{0}".format(settings.APPID))
         if code:
-            session_info = WXAPPAPI(settings.APPID, settings.APPSECRET)
+            session_info = WXAPPAPI(appid=settings.APPID,app_secret=settings.APPSECRET)
             try:
                 session_info = session_info.exchange_code_for_session_key(code=code)
             except OAuth2AuthExchangeError:
