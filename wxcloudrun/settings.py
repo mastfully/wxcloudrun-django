@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import time
+from datetime import timedelta
 
 CUR_PATH = os.path.dirname(os.path.realpath(__file__))  
 LOG_PATH = os.path.join(os.path.dirname(CUR_PATH), 'logs') # LOG_PATH是存放日志的路径
@@ -29,7 +30,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'wxcloudrun'
+    'rest_framework',
+    'wxcloudrun',
+    'users',
+    'camp',
+    'tenat'
 ]
 
 MIDDLEWARE = [
@@ -69,10 +74,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get("MYSQL_DATABASE", 'django_demo'),
-        'USER': os.environ.get("MYSQL_USERNAME"),
-        'HOST': os.environ.get("MYSQL_ADDRESS").split(':')[0],
-        'PORT': os.environ.get("MYSQL_ADDRESS").split(':')[1],
-        'PASSWORD': os.environ.get("MYSQL_PASSWORD"),
+        'USER': os.environ.get("MYSQL_USERNAME",'root'),
+        'HOST':os.environ.get("MYSQL_ADDRESS",).split(':')[0],
+        'PORT': os.environ.get("MYSQL_ADDRESS",).split(':')[1],
+        'PASSWORD': os.environ.get("MYSQL_PASSWORD",),
         'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
@@ -164,6 +169,47 @@ LOGGING = {
             'propagate': True
         },
     }
+}
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # 通过 JWT 进行用户验证，验证过程需要访问数据库
+        'rest_framework_simplejwt.authentication.JWTTokenUserAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        ],
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.SearchFilter',
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.OrderingFilter'
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(days=1),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
 # Internationalization
