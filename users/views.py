@@ -6,6 +6,7 @@ import logging
 from weixin import WXAPPAPI
 from weixin.oauth2 import OAuth2AuthExchangeError
 from wxcloudrun import settings
+from .utils import GetOpenId
 
 
 # Create your views here.
@@ -15,7 +16,7 @@ from .serializers import *
 logger = logging.getLogger('django')
 
 
-def create_or_update_user_info(openid, tenat_id):
+def create_or_update_user_info(openid, ):
     """
     创建或者更新用户信息
     :param openid: 微信 openid
@@ -23,10 +24,7 @@ def create_or_update_user_info(openid, tenat_id):
     :return: 返回用户对象
     """
     if openid:
-        if tenat_id:
-            user, created = Users.objects.update_or_create(openid=openid, tenat_id=tenat_id)
-        else:
-            user, created = Users.objects.get_or_create(openid=openid,)
+        user, created = Users.objects.update_or_create(openid=openid, )
         return user
     return None
 
@@ -40,17 +38,16 @@ class LoginView(APIView):
     permission_classes = []
 
     def post(self, request):
-        tenat_id = request.data.get('tenat_id')
         code = request.data.get('code')
         if code:
-            session_info = WXAPPAPI(appid=settings.APPID,app_secret=settings.APPSECRET)
+            session_info = GetOpenId(appid=settings.APPID,appsecret=settings.APPSECRET)
             try:
-                session_info = session_info.exchange_code_for_session_key(code=code)
+                session_info = session_info.get_session(code=code)
             except OAuth2AuthExchangeError:
                 session_info = None
             if session_info:
                 openid = session_info.get('openid')
-                user = create_or_update_user_info(openid, tenat_id)
+                user = create_or_update_user_info(openid,)
                 if user:
                     token = JfwTokenObtainPairSerializer.get_token(user).access_token
                     return Response(
