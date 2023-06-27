@@ -3,8 +3,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK,HTTP_204_NO_CONTENT
 import logging
-from weixin import WXAPPAPI
-from weixin.oauth2 import OAuth2AuthExchangeError
 from wxcloudrun import settings
 from .utils import GetOpenId
 
@@ -41,10 +39,8 @@ class LoginView(APIView):
         code = request.data.get('code')
         if code:
             session_info = GetOpenId(appid=settings.APPID,appsecret=settings.APPSECRET)
-            try:
-                session_info = session_info.get_session(code=code)
-            except OAuth2AuthExchangeError:
-                session_info = None
+            session_info = session_info.get_session(code=code)
+            logger.info("session:{0}".format(session_info))
             if session_info:
                 openid = session_info.get('openid')
                 user = create_or_update_user_info(openid,)

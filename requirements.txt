@@ -15,7 +15,6 @@ pycryptodome==3.18.0
 PyJWT==2.7.0
 PyMySQL==1.0.2
 pyOpenSSL==23.2.0
-python-weixin==0.5.0
 pytz==2021.3
 requests==2.31.0
 simplejson==3.19.1
