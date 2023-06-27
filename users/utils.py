@@ -9,7 +9,7 @@ class GetOpenId:
         self.appsecret = appsecret
 
     def get_session(self,code):
-        url = f"{self.jscode2session_url}?appid={self.appid}&secret{self.appsecret}&code" \
+        url = f"{self.jscode2session_url}?appid={self.appid}&secret{self.appsecret}&js_code" \
               f"={code}&grant_type=authorization_code"
 
         resp = requests.get(url,verify=False)
