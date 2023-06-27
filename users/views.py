@@ -22,7 +22,7 @@ def create_or_update_user_info(openid, ):
     :return: 返回用户对象
     """
     if openid:
-        user, created = Users.objects.update_or_create(openid=openid, )
+        user, created = Users.objects.update_or_create(id=openid, )
         return user
     return None
 
@@ -40,7 +40,6 @@ class LoginView(APIView):
         if code:
             session_info = GetOpenId(appid=settings.APPID,appsecret=settings.APPSECRET)
             session_info = session_info.get_session(code=code)
-            logger.info("session:{0}".format(session_info))
             if session_info:
                 openid = session_info.get('openid')
                 user = create_or_update_user_info(openid,)
