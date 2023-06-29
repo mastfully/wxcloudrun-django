@@ -48,7 +48,6 @@ class LoginView(APIView):
                     return Response(
                         {
                             'token': str(token),
-                            'openid': openid,
                         },
                         status=HTTP_200_OK)
         return Response({'token': None, 'user': {}}, status=HTTP_204_NO_CONTENT)
