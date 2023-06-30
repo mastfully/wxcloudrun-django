@@ -1,4 +1,4 @@
-from django.db import models, connection
+from django.db import models
 
 from tenat.models import Tenat
 from users.models import Users
@@ -105,7 +105,7 @@ class BaseSignUpListModel(models.Model):
     household_income = models.CharField(max_length=10, verbose_name='家庭收入', blank=True, null=True)
     ideal_heigh_school = models.CharField(max_length=20, verbose_name='理想高中', blank=True, null=True)
     ideal_university = models.CharField(max_length=20, verbose_name='理想大学', blank=True, null=True)
-    interst = models.TextField(verbose_name='兴趣爱好', blank=True, null=True)
+    university_planning = models.CharField(max_length=10,verbose_name='子女规划', blank=True, null=True)
     investment_in_children_education = models.CharField(max_length=20,verbose_name='教育投资', blank=True, null=True)
     math_full = models.CharField(max_length=10, verbose_name='数学满分', blank=True, null=True)
     math_ideal_score = models.CharField(max_length=10, verbose_name='数学理想分数', blank=True, null=True)

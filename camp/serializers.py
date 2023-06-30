@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, Serializer
 
 from .models import *
 
@@ -34,7 +34,7 @@ class CCampTbNameSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class SignUpSerializer(ModelSerializer):
+class SignUpSerializer(Serializer):
     class Meta:
         model = BaseSignUpListModel
         fields = '__all__'
