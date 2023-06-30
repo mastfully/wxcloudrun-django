@@ -59,18 +59,26 @@ class SetTbView(APIView):
 class SignUpView(APIView):
     def post(self,request):
         data = request.data
-        ser = SignUpSerializer(data.camp)
+        user = request.user
+        ser = SignUpSerializer(data['camp'])
         if ser.is_valid():
-            if data.camp_type == 'jcamp':
-                tb_name = JCampTbName.objects.get(current=True)
-                jcamp = create_or_get_sign_up_list_model(tb_name)
-                jcamp.objects.create(**data)
-                return Response(status=status.HTTP_200_OK)
-            if data.camp_type == 'ccamp':
-                tb_name = CCampTbName.objects.get(current=True)
-                ccamp = create_or_get_sign_up_list_model(tb_name)
-                ccamp.objects.create(**data)
-                return Response(status=status.HTTP_200_OK)
+            if data['camp_type'] == 'jcamp':
+                try:
+                    tb_name = JCampTbName.objects.get(current=True)
+                    jcamp = create_or_get_sign_up_list_model(tb_name)
+                    jcamp.objects.create(user=user, **data)
+                    return Response(status=status.HTTP_200_OK)
+                except:
+                    return Response(data={'msg':'服务器出错'},status=status.HTTP_400_BAD_REQUEST)
+            if data['camp_type'] == 'ccamp':
+                try:
+                    tb_name = CCampTbName.objects.get(current=True)
+                    ccamp = create_or_get_sign_up_list_model(tb_name)
+                    ccamp.objects.create(user=user, **data)
+                    return Response(status=status.HTTP_200_OK)
+                except:
+                    return Response(data={'msg': '服务器出错'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(data={'msg':'数据不合规'},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get(self, request):
         pass
